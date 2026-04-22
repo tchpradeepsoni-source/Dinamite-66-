@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>D66 English Game</title>
+<style>
+body{background:#111;color:#fff;text-align:center;}
+canvas{border:1px solid white;}
+textarea{width:100%;height:120px;background:#1e1e1e;color:#0f0;}
+</style>
+</head>
+
+<body>
+
+<h2>D66 English Game Language</h2>
+
+<textarea id="code">
+make player at 50 100
+color player red
+speed player 3
+</textarea>
+
+<br>
+<button onclick="run()">RUN</button>
+
+<canvas id="game" width="400" height="200"></canvas>
+
+<script>
+
+let player = {x:50,y:100,color:"yellow",speed:2};
+
+// INTERPRETER
+function run(){
+
+  let lines = code.value.split("\n");
+
+  for(let line of lines){
+
+    let p = line.trim().split(" ");
+
+    if(p[0]=="make"){
+      player.x = Number(p[3]);
+      player.y = Number(p[4]);
+    }
+
+    if(p[0]=="color"){
+      player.color = p[2];
+    }
+
+    if(p[0]=="speed"){
+      player.speed = Number(p[2]);
+    }
+  }
+
+  loop();
+}
+
+// GAME LOOP
+function loop(){
+
+  let ctx = game.getContext("2d");
+
+  ctx.fillStyle="black";
+  ctx.fillRect(0,0,400,200);
+
+  ctx.fillStyle=player.color;
+  ctx.fillRect(player.x,player.y,40,40);
+
+  requestAnimationFrame(loop);
+}
+
+// CONTROL
+document.addEventListener("keydown", e=>{
+  if(e.key=="ArrowRight") player.x += player.speed;
+  if(e.key=="ArrowLeft") player.x -= player.speed;
+  if(e.key=="ArrowUp") player.y -= player.speed;
+  if(e.key=="ArrowDown") player.y += player.speed;
+});
+
+</script>
+
+</body>
+</html>
